@@ -87,7 +87,12 @@ class Pandoc_Filter
         } else {
             $format = '';
         }
-        $altered = self::walk($doc, $action, $format, $doc[0]->unMeta);
+        $altered = self::walk(
+          $doc,
+          $action,
+          $format,
+          isset($doc->meta) ? $doc->meta : (isset($doc[0]) && isset($doc[0]->unMeta) ? $doc[0]->unMeta : null)
+        );
         $json = json_encode($altered, JSON_HEX_TAG|JSON_HEX_AMP|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
         
         echo $json . PHP_EOL;
