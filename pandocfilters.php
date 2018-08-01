@@ -27,7 +27,7 @@ class Pandoc_Filter
         if (is_array($x)) {
             $array = array();
             foreach ($x as $item) {
-                if (is_object($item) && isset($item->t)) {
+                if (is_object($item) && isset($item->t) && isset($item->c)) {
                     $res = $action($item->t, $item->c, $format, $meta);
                     if (is_null($res)) {
                         $array[] = self::walk($item, $action, $format, $meta);
@@ -80,7 +80,7 @@ class Pandoc_Filter
      */
     public static function toJSONFilter($action, $source = null)
     {
-        if (! $source) $source = self::$source;
+        $source = isset($source) ? $source : self::$source;
         $doc = json_decode(file_get_contents($source));
         if (count($GLOBALS['argv']) > 1) {
             $format = $GLOBALS['argv'][1];
